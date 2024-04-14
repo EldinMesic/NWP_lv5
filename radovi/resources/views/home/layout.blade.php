@@ -1,3 +1,10 @@
+@if (session('message'))
+    <div class="container row">
+        <div class="alert alert-success col-md-6 offset-md-4">
+            {{ session('message') }}
+        </div>
+    </div> 
+@endif
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -12,7 +15,15 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        switch ($user->role) {
+            case 'professor':
+                return view();
+            case 'student':
+                return view();
+            default:
+                return redirect()->back();
+        }
     }
 
     /**
@@ -20,7 +31,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('task.create');
     }
 
     /**
@@ -28,7 +39,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = $request->except('_token');
+        $user = User::find(Auth::id());
+        try {
+            $user->createdTasks()->create($post); 
+            return back()->with('message', 'Work created successfully');
+        } catch (MassAssignmentException $e) {
+            return back()->with('message', 'Failed to create Work');
+        }
     }
 
     /**

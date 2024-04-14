@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -13,4 +15,16 @@ class UserController extends Controller
 
         return redirect()->back()->with('message', 'User role updated successfully');
     }
+
+    public function changeLanguage(Request $request){
+        $locale = $request->input('locale');
+
+        if(in_array($locale, ['en', 'hr'])){
+            App::setLocale($locale);
+            Session::put('language', $locale);
+        }
+
+        return redirect()->route('task.create');
+    }
+
 }

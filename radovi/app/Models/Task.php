@@ -12,7 +12,7 @@ class Task extends Model
     protected $fillable = [
         'work_name', 
         'work_name_english', 
-        'work_mission', 
+        'work_task', 
         'study_type'
     ];
     public function professor()

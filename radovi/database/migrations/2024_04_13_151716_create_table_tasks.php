@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('work_name_english');
             $table->text('work_task')->nullable();
             $table->string('study_type')->nullable();
-            $table->foreignIdFor(User::class, 'professor_id')->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'student_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignIdFor(User::class, 'professor_id')->constrained('users')->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'student_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }
