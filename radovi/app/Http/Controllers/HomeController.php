@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+        switch ($user->role) {
+            case 'student':
+                return view('home.student');
+            case 'professor':
+                return view('home.professor');
+            case 'admin':
+                return view('home.admin', ['users' => User::all()]);
+            default:
+            return view('welcome');
+        }
     }
 }
