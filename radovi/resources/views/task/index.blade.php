@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-@include('home.layout')
+@include('task.layout')
 
 <div class="container">
     <h2>Works with Applicants</h2>

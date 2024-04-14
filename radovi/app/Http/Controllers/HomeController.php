@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,15 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        switch ($user->role) {
-            case 'student':
-                return view('home.student');
-            case 'professor':
-                return view('home.professor');
-            case 'admin':
-                return view('home.admin', ['users' => User::all()]);
-            default:
+        $user = User::find(Auth::id());
+
+        if($user->role === 'admin'){
+            return view('home.admin', ['users' => User::all()]);
+
+        }else if($user->role === 'professor'){
+            return view('home.professor');
+
+        }else if($user->role === 'student'){
+            $tasks = Task::doesntHave('student')->get();
+            return view('home.student', ['tasks' => $tasks]);
+
+        }else{
             return view('welcome');
         }
     }

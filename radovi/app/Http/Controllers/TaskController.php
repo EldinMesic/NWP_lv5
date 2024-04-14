@@ -15,15 +15,12 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        switch ($user->role) {
-            case 'professor':
-                return view();
-            case 'student':
-                return view();
-            default:
-                return redirect()->back();
-        }
+        $user = User::find(Auth::id());
+
+        $tasks = $user->createdTasks->filter(function ($task){
+            return $task->appliedStudents()->exists();
+        });
+        return view('task.index', ['tasks' => $tasks]);
     }
 
     /**
@@ -49,35 +46,16 @@ class TaskController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
+    public function updateUser(Task $task, User $user){
+        if($user->appliedTask()->doesntExist() && in_array($task, $user->appliedTasks()->get()->toArray())){
+            $user->appliedTasks()->detach();
+            $task->student()->associate($user);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Task $task)
-    {
-        //
+            $user->save();
+            $task->save();
+            return route('task.index');
+        }else{
+            return redirect()->back();
+        }
     }
 }

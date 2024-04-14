@@ -50,9 +50,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'professor_id');
     }
+    public function appliedTask(){
+        return $this->hasOne(Task::class, 'task_id');
+    }
     public function appliedTasks()
     {
-        return $this->hasMany(Task::class, 'student_id');
+        return $this->belongsToMany(Task::class, 'user_task');
     }
+    
 
 }
