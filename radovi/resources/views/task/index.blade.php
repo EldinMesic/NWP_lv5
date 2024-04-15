@@ -15,10 +15,12 @@
             <h5 class="card-title">Applied Students</h5>
             <ul class="list-group">
                 @foreach($task->appliedStudents as $student)
-                <form action="{{ route('task.updateUser', ['task' => $task, 'user' => $user]) }}" method="GET">
+                <form action="{{ route('task.updateUser', ['task' => $task]) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="form-group d-flex justify-content-between align-items-center">
                         <label>{{ $student->name }}</label>
+                        <input type="hidden" name="user_id" value ="{{ $student->id }}">
                         <button type="submit" class="btn btn-primary">Accept Application</button>
                     </div>
                 </form>

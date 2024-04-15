@@ -35,7 +35,11 @@ class HomeController extends Controller
 
         }else if($user->role === 'student'){
             $tasks = Task::doesntHave('student')->get();
-            $acceptedTask = $user->appliedTask()->get();
+
+            $taskIds = $tasks->pluck('id')->toArray();
+            $appliedTaskIds = $user->appliedTasks()->pluck('tasks.id')->toArray();
+            $tasks = Task::findMany(array_diff($taskIds, $appliedTaskIds));
+            $acceptedTask = $user->appliedTask()->first();
             return view('home.student', ['tasks' => $tasks, 'acceptedTask' => $acceptedTask]);
 
         }else{

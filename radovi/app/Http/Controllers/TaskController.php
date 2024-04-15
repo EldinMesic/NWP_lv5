@@ -46,14 +46,15 @@ class TaskController extends Controller
         }
     }
 
-    public function updateUser(Task $task, User $user){
-        if($user->appliedTask()->doesntExist() && in_array($task, $user->appliedTasks()->get()->toArray())){
+    public function updateUser(Request $request, Task $task){
+        $user = User::find($request->input('user_id'));
+        if($user->appliedTask()->doesntExist() && in_array($task->id, $user->appliedTasks()->pluck('tasks.id')->toArray())){
             $user->appliedTasks()->detach();
             $task->student()->associate($user);
 
             $user->save();
             $task->save();
-            return route('task.index');
+            return redirect()->route('task.index');
         }else{
             return redirect()->back();
         }
@@ -64,7 +65,6 @@ class TaskController extends Controller
 
         if(!is_null($task) && !is_null($user) && $user->appliedTask()->doesntExist()){
             $user->appliedTasks()->attach($task->id);
-
             return redirect()->back()->with('message','Successfully Applied');
 
         }else{

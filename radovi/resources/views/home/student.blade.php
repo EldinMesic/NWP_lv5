@@ -14,7 +14,7 @@
             <p class="card-subtitle">{{ $task->work_name_english }}</p>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Professor: {{ $task->profesor->name }}</h5>
+            <h5 class="card-title">Professor: {{ $task->professor->name }}</h5>
             <h6 class="card-subtitle">{{ $task->work_task }} work</h6>
             <form action="{{ route('task.apply', ['task' => $task]) }}" method="GET">
                 @csrf
@@ -44,7 +44,7 @@
             <p class="card-subtitle">{{ $acceptedTask->work_name_english }}</p>
         </div>
         <div class="card-body">
-            <h5 class="card-title">Professor: {{ $acceptedTask->profesor->name }}</h5>
+            <h5 class="card-title">Professor: {{ $acceptedTask->professor->name }}</h5>
             <h6 class="card-subtitle">{{ $acceptedTask->work_task }} work</h6>
         </div>
     </div> 
