@@ -35,7 +35,8 @@ class HomeController extends Controller
 
         }else if($user->role === 'student'){
             $tasks = Task::doesntHave('student')->get();
-            return view('home.student', ['tasks' => $tasks]);
+            $acceptedTask = $user->appliedTask()->get();
+            return view('home.student', ['tasks' => $tasks, 'acceptedTask' => $acceptedTask]);
 
         }else{
             return view('welcome');

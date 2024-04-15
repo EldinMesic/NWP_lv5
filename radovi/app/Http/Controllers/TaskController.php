@@ -58,4 +58,17 @@ class TaskController extends Controller
             return redirect()->back();
         }
     }
+
+    public function apply(Task $task){
+        $user = User::find(Auth::id());
+
+        if(!is_null($task) && !is_null($user) && $user->appliedTask()->doesntExist()){
+            $user->appliedTasks()->attach($task->id);
+
+            return redirect()->back()->with('message','Successfully Applied');
+
+        }else{
+            return redirect()->back();
+        }
+    }
 }

@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/task', [TaskController::class, 'index'])->name('task.index');
     });
     
+    Route::get('/task/apply', [TaskController::class, 'apply'])->middleware(CheckRole::class.'student')->name('task.apply');
 });
 Route::post('/lang', [LanguageController::class, 'switchLang'])->name('lang.switch');
 
